@@ -146,7 +146,7 @@ export default function LoginPage() {
               </span>
             </div>
 
-            <div className="flex justify-evenly py-10 gap-5">
+            <div className="flex flex-col items-center py-10 gap-5">
               <div className="flex flex-col">
                 <Link
                   to={"/register/seller"}
@@ -163,11 +163,11 @@ export default function LoginPage() {
               </div>
               <button
                 onClick={handleLogin}
-                className="p-2 bg-amber-900 hover:transition-transform hover:scale-105 hover:duration-500  text-white rounded-md w-16"
+                className="p-2 w-full bg-amber-900 hover:transition-transform hover:scale-105 hover:duration-500  text-white rounded-md"
               >
                 Login
               </button>
-              <div id="buttonDiv"></div> <div id="buttonDiv"></div>
+              <div id="buttonDiv"></div>
             </div>
           </div>
         </div>
