@@ -7,6 +7,7 @@ import store from "../src/store";
 import { Provider } from "react-redux";
 const App = () => {
   const [loading, setLoading] = useState(false);
+  const [productById, setProductById]= useState(null)
 
   return (
     <Provider store={store}>
@@ -14,6 +15,8 @@ const App = () => {
         value={{
           loading,
           setLoading,
+          productById,
+          setProductById
         }}
       >
         <RouterProvider router={router}></RouterProvider>;

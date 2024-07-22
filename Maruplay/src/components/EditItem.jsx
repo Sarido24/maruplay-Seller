@@ -1,18 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchError, fetchLoading, fetchProducts, setopenEdit } from "../store/products-slice";
+import MyContext from "../context";
 
-export default function PostItem({setOpenAdd}) {
+export default function EditItem() {
+    const {productById, setProductById} = useContext(MyContext)
+
     const dispatch = useDispatch()
-  const [data, setData] = useState({
-    name: "",
-    description: "",
-    price: "",
-    stock: "",
-    image: "",
-    categoryId: '2'
-  });
+
 
   function handleChange(e) {
     const name = e.target.name;
@@ -21,38 +17,40 @@ export default function PostItem({setOpenAdd}) {
       value = e.target.files[0];
     }
 
-    setData({
-      ...data,
+    setProductById({
+      ...productById,
       [name]: value,
     });
   }
-//   console.log(data);
+  // console.log(productById);
 
   function handleSubmit(e) {
-    console.log(e)
+    // console.log(e)
     e.preventDefault()
 
-    const formData = new FormData()
-    formData.append("name", data.name)
-    formData.append("description", data.description)
-    formData.append("price", data.price)
-    formData.append("stock", data.stock)
-    formData.append("image", data.image)
-    formData.append("categoryId", data.categoryId)
-    async function postProduct(e) {
+    // const formData = new FormData()
+    // formData.append("name", data.name)
+    // formData.append("description", data.description)
+    // formData.append("price", data.price)
+    // formData.append("stock", data.stock)
+    // formData.append("image", data.image)
+    // formData.append("categoryId", data.categoryId)
+    async function postEditProduct(e) {
         try {
             dispatch(fetchLoading(true))
             const response = await axios({
-                method: "post",
-                url: import.meta.env.VITE_BASE_URL + `/products?cloud_name=${import.meta.env.VITE_CLOUD_NAME}&api_key=${import.meta.env.VITE_CLOUD_API_KEY}&api_secret=${import.meta.env.VITE_CLOUD_API_SECRET}`,
-                data: formData,
+                method: "put",
+                url: import.meta.env.VITE_BASE_URL +  `/products/${productById.id}?cloud_name=${import.meta.env.VITE_CLOUD_NAME}&api_key=${import.meta.env.VITE_CLOUD_API_KEY}&api_secret=${import.meta.env.VITE_CLOUD_API_SECRET}`,
+                data: productById,
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("access_token"),
                 }
             });
             console.log(response);
             dispatch(fetchProducts())
-        setData({
+            dispatch(setopenEdit(false))
+        setProductById({
+          ...productById,
             name: "",
             description: "",
             price: "",
@@ -69,7 +67,7 @@ export default function PostItem({setOpenAdd}) {
       }
     }
 
-    postProduct()
+    postEditProduct()
   }
 
   return (
@@ -80,7 +78,7 @@ export default function PostItem({setOpenAdd}) {
         </label>
 
         <input
-            value={data.name}
+          value={productById?.name}
           onChange={handleChange}
           type="text"
           id="name"
@@ -90,7 +88,7 @@ export default function PostItem({setOpenAdd}) {
 
         <label className="">Description:</label>
         <input
-         value={data.description}
+         value={productById?.description}
           onChange={handleChange}
           type="text"
           name="description"
@@ -99,7 +97,7 @@ export default function PostItem({setOpenAdd}) {
 
         <label className="">Price:</label>
         <input
-         value={data.price}
+         value={productById?.price}
           name="price"
           onChange={handleChange}
           type="number"
@@ -108,7 +106,7 @@ export default function PostItem({setOpenAdd}) {
 
         <label className="">Stock:</label>
         <input
-         value={data.stock}
+         value={productById?.stock}
           name="stock"
           onChange={handleChange}
           type="number"
@@ -125,19 +123,13 @@ export default function PostItem({setOpenAdd}) {
 
         <div className="flex gap-5">
           <button type="submit" className="bg-green-600 p-3 text-white rounded-md w-full md:w-[20%]" >
-            Add
+            Save
           </button>
           <button
           onClick={()=>{
-            dispatch(setopenEdit(false))
-            setData({
-                name: "",
-                description: "",
-                price: "",
-                stock: "",
-                image: "",
-                categoryId: '2'
-            })
+
+            dispatch(setopenEdit())
+            
           }}
 
             type="reset"

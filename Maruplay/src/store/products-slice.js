@@ -6,7 +6,8 @@ export const productsSlice = createSlice({
   initialState: {
     items: [],
     loading: false,
-    error: null
+    error: null,
+    openEdit: false
 
   },
   reducers: {
@@ -27,12 +28,16 @@ export const productsSlice = createSlice({
     fetchError: (state, action)=>{
       console.log(action);
       state.error = action.payload
+    },
+
+    setopenEdit : (state, action)=>{
+      state.openEdit = action.payload
     }
-  },
+  }, 
 });
 
 // Action creators are generated for each case reducer function
-export const { fetch, fetchLoading, fetchError } = productsSlice.actions;
+export const { fetch, fetchLoading, fetchError, setopenEdit } = productsSlice.actions;
 
 export function fetchProducts() {
   return async (dispatch) => {
