@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { fetchProducts } from "../store/products-slice";
+import { fetchError, fetchProducts } from "../store/products-slice";
 
 export default function Card({ props }) {
   // console.log(props);
@@ -20,7 +20,9 @@ export default function Card({ props }) {
         console.log(response)
         dispatch(fetchProducts());
       } catch (error) {
-        console.log(error);
+        // console.log(error);
+        const errMessage = error.response.data
+        dispatch(fetchError(errMessage))
       }
     }
     deleteById()

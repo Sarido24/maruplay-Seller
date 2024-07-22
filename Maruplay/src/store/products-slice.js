@@ -6,6 +6,8 @@ export const productsSlice = createSlice({
   initialState: {
     items: [],
     loading: false,
+    error: null
+
   },
   reducers: {
     fetch: (state, action) => {
@@ -21,14 +23,16 @@ export const productsSlice = createSlice({
     fetchLoading: (state, action) => {
       state.loading = action.payload;
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
-    },
+
+    fetchError: (state, action)=>{
+      console.log(action);
+      state.error = action.payload
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { fetch, fetchLoading } = productsSlice.actions;
+export const { fetch, fetchLoading, fetchError } = productsSlice.actions;
 
 export function fetchProducts() {
   return async (dispatch) => {
@@ -44,12 +48,16 @@ export function fetchProducts() {
       console.log(response);
       // setProucts(response.data.rows);
       dispatch(fetch(response.data.rows));
+      dispatch(fetchError(null));
     } catch (error) {
-      console.log(error);
+      dispatch(fetchError(error))
     } finally {
       dispatch(fetchLoading(false));
     }
   };
 }
+
+
+
 
 export default productsSlice.reducer;
