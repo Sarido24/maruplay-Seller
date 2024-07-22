@@ -41,7 +41,7 @@ export default function PostItem() {
     formData.append("categoryId", data.categoryId)
     async function postProduct(e) {
         try {
-            fetchLoading(true);
+            dispatch(fetchLoading(true))
             const response = await axios({
                 method: "post",
                 url: import.meta.env.VITE_BASE_URL + `/products?cloud_name=${import.meta.env.VITE_CLOUD_NAME}&api_key=${import.meta.env.VITE_CLOUD_API_KEY}&api_secret=${import.meta.env.VITE_CLOUD_API_SECRET}`,
@@ -64,7 +64,7 @@ export default function PostItem() {
             console.log(error);
             dispatch(fetchError(error.response.data));
         } finally {
-            fetchLoading(false);
+            dispatch(fetchLoading(false));
       }
     }
 
@@ -127,6 +127,17 @@ export default function PostItem() {
             Add
           </button>
           <button
+          onClick={()=>{
+            setData({
+                name: "",
+                description: "",
+                price: "",
+                stock: "",
+                image: "",
+                categoryId: '2'
+            })
+          }}
+
             type="reset"
             className="bg-red-600 p-3 text-white rounded-md w-full md:w-[20%]"
           >
