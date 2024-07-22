@@ -4,9 +4,16 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import Card from "../components/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { fetch } from "../store/products-slice";
 
 export default function Seller() {
-  const [products, setProucts] = useState(null);
+
+
+  const products = useSelector((state) => state.products.items)
+  const dispatch = useDispatch()
+
+  // const [products, setProucts] = useState(null);
   const [loading, setLoading] = useState(false)
 
   async function fetchProducts() {
@@ -20,9 +27,10 @@ export default function Seller() {
         },
       });
       console.log(response);
-      setProucts(response.data.rows);
+      // setProucts(response.data.rows);
+      dispatch(fetch(response.data.rows))
     } catch (error) {
-      console.log(response);
+      // console.log(response);
     }finally{
         setLoading(false)
     }
@@ -32,6 +40,7 @@ export default function Seller() {
     fetchProducts();
   }, []);
 
+ 
   return (
     <>
       <Navbar />
