@@ -5,20 +5,20 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import Card from "../components/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { fetch } from "../store/products-slice";
+import { fetch, fetchLoading } from "../store/products-slice";
 
 export default function Seller() {
 
 
   const products = useSelector((state) => state.products.items)
+  const loading = useSelector((state) => state.products.loading)
   const dispatch = useDispatch()
 
   // const [products, setProucts] = useState(null);
-  const [loading, setLoading] = useState(false)
 
   async function fetchProducts() {
     try {
-        setLoading(true)
+        dispatch(fetchLoading(true))
       const response = await axios({
         method: "get",
         url: import.meta.env.VITE_BASE_URL + "/products?category=2",
@@ -32,7 +32,7 @@ export default function Seller() {
     } catch (error) {
       // console.log(response);
     }finally{
-        setLoading(false)
+      dispatch(fetchLoading(false))
     }
   }
 

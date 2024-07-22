@@ -4,6 +4,7 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState: {
     items: [],
+    loading: false,
   },
   reducers: {
     fetch: (state, action) => {
@@ -16,8 +17,8 @@ export const productsSlice = createSlice({
       const products = action.payload
       state.items = [...products]
     },
-    decrement: (state) => {
-      state.value -= 1
+    fetchLoading: (state, action) => {
+      state.loading = action.payload
     },
     incrementByAmount: (state, action) => {
       state.value += action.payload
@@ -26,6 +27,6 @@ export const productsSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { fetch } = productsSlice.actions
+export const { fetch, fetchLoading } = productsSlice.actions
 
 export default productsSlice.reducer
